@@ -35,6 +35,15 @@ if (!$result['ok']) {
   exit;
 }
 
+// Checked after validation, not before, so a student fumbling a required field
+// never burns their own quota. Only submissions good enough to be stored count.
+if (rate_limited()) {
+  http_response_code(429);
+  header('Retry-After: 3600');
+  echo json_encode(['error' => 'That is a lot of visions from one place. Try again in an hour.']);
+  exit;
+}
+
 if (!store_record($result['record'])) {
   error_log('next-fifty: could not write submission to ' . DATA_DIR);
   http_response_code(502);

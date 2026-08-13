@@ -89,7 +89,7 @@ Lost the key? Ask the admin to delete `data/key.php`, then load `setup.php` agai
 | `store.php` | Where submissions land, and how they stay unreadable over HTTP. |
 | `setup.php` | Run once. Prints the export key, then locks. |
 | `export.php` | The CSV, gated on that key. |
-| `selfcheck.php` | `php selfcheck.php`. 26 assertions over the rules that matter. |
+| `selfcheck.php` | `php selfcheck.php`. 32 assertions over the rules that matter. |
 
 ## How submissions are stored
 
@@ -106,6 +106,28 @@ Two things keep those files private, because we cannot read this server's vhost 
 
 Verified: fetching a stored submission over HTTP returns 200 with 0 bytes, while the same
 file on disk contains the full record.
+
+## Rate limiting
+
+The submit endpoint is public, as any form on the open internet is: anyone who knows the URL
+can POST to it. They cannot read, list or delete anything, and they have no say over where a
+file lands, but nothing stops a script from sending a flood of valid-looking submissions.
+
+So one address gets **30 submissions per hour**, after which it receives a 429 and a plain
+message. The limit is checked *after* validation, so a student fumbling a required field
+never burns their own quota.
+
+Deliberately loose, for one reason: **IITB campus wifi is NAT'd**, so an entire lab can share
+a single public address, and a class filling the form together after an announcement is the
+normal case rather than an attack. Turning real students away is far worse than letting a
+script through. If anyone is ever refused, raise `RATE_LIMIT` in `store.php`.
+
+For the same reason the client address is read from `X-Forwarded-For` when present, falling
+back to `REMOTE_ADDR`. That header is trivially spoofable, so it weakens the throttle, but
+the alternative is worse: behind a reverse proxy every student would appear as the proxy's
+one address and the whole department would share a single bucket.
+
+Counters are stored hashed, so the folder never holds a list of raw student IP addresses.
 
 ## Validation, deliberately lopsided
 

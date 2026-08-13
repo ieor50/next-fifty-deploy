@@ -60,6 +60,64 @@ function read_records(): array {
   return $out;
 }
 
+// How many submissions one address may send per hour.
+//
+// Deliberately loose. IITB campus wifi is NAT'd, so a whole lab can share one
+// public address, and a class filling the form together after an announcement is
+// the normal case, not the attack. Blocking real students is far worse than
+// letting a script through, so this is set to stop a flood, not to be tidy.
+// Raise it here if anyone is ever turned away.
+const RATE_LIMIT = 30;
+const RATE_WINDOW = 3600;
+
+/** The client address, as best we can see it from behind a proxy. */
+function client_ip(): string {
+  // X-Forwarded-For is trivially spoofable, so using it weakens the throttle.
+  // Using REMOTE_ADDR instead would be worse: if this server sits behind a
+  // reverse proxy, every student appears as the proxy's single address and the
+  // whole department shares one bucket. A throttle that can be sidestepped beats
+  // a throttle that locks out the people it was built for.
+  $fwd = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
+  if ($fwd !== '') {
+    $first = trim(explode(',', $fwd)[0]);
+    if ($first !== '') return $first;
+  }
+  return (string)($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+}
+
+/**
+ * True if this address has already used up its hour.
+ *
+ * Fails open on any bookkeeping error: a rate limiter that cannot write its own
+ * counter must not be the reason a student loses their submission.
+ *
+ * ponytail: one file per address, last-write-wins under concurrency, so a burst
+ * of simultaneous requests can slip a few over the line. Fine for a form that
+ * takes a few hundred entries in three weeks. If it ever needs to be exact,
+ * that is a database, and this form does not deserve one.
+ */
+function rate_limited(): bool {
+  ensure_store();
+  // Hashed, so the folder never holds a list of raw student IP addresses, and so
+  // IPv6 colons cannot turn into odd filenames.
+  $path = DATA_DIR . '/rl-' . substr(hash('sha256', client_ip()), 0, 16) . '.php';
+  $now = time();
+  $state = ['start' => $now, 'n' => 0];
+
+  if (is_file($path)) {
+    $prev = json_decode(substr((string)@file_get_contents($path), strlen(GUARD)), true);
+    if (is_array($prev) && isset($prev['start'], $prev['n']) && $now - (int)$prev['start'] < RATE_WINDOW) {
+      $state = ['start' => (int)$prev['start'], 'n' => (int)$prev['n']];
+    }
+  }
+
+  if ($state['n'] >= RATE_LIMIT) return true;
+
+  $state['n']++;
+  @file_put_contents($path, GUARD . json_encode($state), LOCK_EX);
+  return false;
+}
+
 /** The export key, or '' if setup.php has not been run yet. */
 function read_key(): string {
   $path = DATA_DIR . '/key.php';

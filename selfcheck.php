@@ -92,5 +92,28 @@ check('rupee sign survives the round trip', $back['entries'][0]['bracket'] === '
 unlink($file);
 rmdir($tmp);
 
+// Rate limiting. Uses the real store, so run this in a scratch copy of the dir.
+$_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.7, 10.119.2.10';
+check('proxied client ip is the leftmost entry', client_ip() === '10.0.0.7');
+unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+$_SERVER['REMOTE_ADDR'] = '203.0.113.9';
+check('falls back to remote addr', client_ip() === '203.0.113.9');
+
+$allowed = 0;
+for ($i = 0; $i < RATE_LIMIT + 5; $i++) {
+  if (!rate_limited()) $allowed++;
+}
+check('rate limit allows exactly RATE_LIMIT in a window', $allowed === RATE_LIMIT);
+check('a different address is unaffected', (function () {
+  $_SERVER['REMOTE_ADDR'] = '203.0.113.10';
+  return rate_limited() === false;
+})());
+check('rate limit files are not exported as submissions',
+  count(array_filter(glob(DATA_DIR . '/rl-*.php') ?: [])) > 0 && count(read_records()) === 0);
+// The counter file must be as unreadable over HTTP as a submission is.
+$rl = (glob(DATA_DIR . '/rl-*.php') ?: [])[0];
+check('rate limit file carries the exit guard', str_starts_with((string)file_get_contents($rl), '<?php exit;'));
+array_map('unlink', glob(DATA_DIR . '/rl-*.php') ?: []);
+
 echo $fails ? "\n$fails FAILED\n" : "\nall good\n";
 exit($fails ? 1 : 0);
