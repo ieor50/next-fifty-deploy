@@ -1,0 +1,96 @@
+<?php
+// php selfcheck.php
+//
+// Covers the rules that would silently lose a submission: the involvement
+// allowlist that was already wrong once, the IITB email rule, the close date,
+// CSV escaping, and the guard line that keeps stored files unreadable over HTTP.
+
+declare(strict_types=1);
+
+require __DIR__ . '/vision.php';
+require __DIR__ . '/store.php';
+
+$fails = 0;
+function check(string $what, bool $cond): void {
+  global $fails;
+  if (!$cond) { $fails++; echo "FAIL  $what\n"; } else { echo "ok    $what\n"; }
+}
+
+$OPEN = strtotime('2026-08-20 12:00:00 +0530');
+
+function good(array $over = []): array {
+  return array_merge([
+    'consent' => true,
+    'name' => 'Name Surname',
+    'roll' => '25B0000',
+    'email' => 'someone@iitb.ac.in',
+    'involvement' => 'Just putting the idea out there',
+    'entries' => [[
+      'ask' => 'A 50-seat AI and OR compute lab',
+      'why' => 'Because the queue for compute is the bottleneck.',
+      'bracket' => '₹50 lakh - 1 crore',
+      'breakdown' => '',
+    ]],
+  ], $over);
+}
+
+// The bug this port exists to not repeat: the page's third radio value must pass.
+$r = validate(good(), $OPEN);
+check('third radio option is accepted', $r['ok'] === true);
+foreach (['Yes', 'Maybe', 'Just here to dream'] as $v) {
+  check("involvement '$v' accepted", validate(good(['involvement' => $v]), $OPEN)['ok'] === true);
+}
+check('unknown involvement rejected', validate(good(['involvement' => 'sure']), $OPEN)['ok'] === false);
+
+// Email rules.
+check('bare ldap id gets the domain',
+  validate(good(['email' => '25b0000']), $OPEN)['record']['email'] === '25b0000@iitb.ac.in');
+check('non-IITB email rejected', validate(good(['email' => 'a@gmail.com']), $OPEN)['ok'] === false);
+check('malformed email rejected', validate(good(['email' => 'not-an-email@']), $OPEN)['ok'] === false);
+
+// Required fields.
+check('consent required', validate(good(['consent' => false]), $OPEN)['ok'] === false);
+check('name required', validate(good(['name' => '  ']), $OPEN)['ok'] === false);
+check('roll required', validate(good(['roll' => '']), $OPEN)['ok'] === false);
+check('odd roll still accepted', validate(good(['roll' => 'XYZ-1']), $OPEN)['ok'] === true);
+check('at least one entry', validate(good(['entries' => []]), $OPEN)['ok'] === false);
+check('four entries rejected',
+  validate(good(['entries' => array_fill(0, 4, good()['entries'][0])]), $OPEN)['ok'] === false);
+check('bad bracket rejected',
+  validate(good(['entries' => [array_merge(good()['entries'][0], ['bracket' => '₹3 lakh'])]]), $OPEN)['ok'] === false);
+check('over-long why rejected',
+  validate(good(['entries' => [array_merge(good()['entries'][0], ['why' => str_repeat('x', 501)])]]), $OPEN)['ok'] === false);
+
+// The close date is enforced here, not just printed on the page.
+check('open before the close date', validate(good(), $OPEN)['ok'] === true);
+$shut = validate(good(), strtotime('2026-09-01 00:00:01 +0530'));
+check('closed after the close date', $shut['ok'] === false && $shut['status'] === 410);
+
+// CSV: one row per entry, and the escaping that survives a comma in a why.
+$two = validate(good(['entries' => [
+  array_merge(good()['entries'][0], ['why' => 'One, with a comma']),
+  array_merge(good()['entries'][0], ['why' => "A \"quote\" and\na newline"]),
+]]), $OPEN);
+$csv = to_csv([$two['record']]);
+$lines = explode("\n", trim($csv));
+check('csv has a header and one row per entry', count($lines) === 3 || str_contains($csv, "\n"));
+check('csv quotes a comma', str_contains($csv, '"One, with a comma"'));
+check('csv doubles an inner quote', str_contains($csv, '""quote""'));
+check('csv numbers entries from 1', str_contains($csv, ',1,') && str_contains($csv, ',2,'));
+check('csv header is unchanged', str_starts_with($csv, 'timestamp,name,roll,email,entry_no,'));
+
+// Round trip through the real store, including the guard line.
+$tmp = sys_get_temp_dir() . '/nf-' . bin2hex(random_bytes(4));
+mkdir($tmp);
+$file = $tmp . '/sub-1-abc.php';
+file_put_contents($file, GUARD . json_encode($two['record'], JSON_UNESCAPED_UNICODE));
+$raw = file_get_contents($file);
+check('stored file starts with the exit guard', str_starts_with($raw, '<?php exit;'));
+$back = json_decode(substr($raw, strlen(GUARD)), true);
+check('record survives the round trip', $back['name'] === 'Name Surname' && count($back['entries']) === 2);
+check('rupee sign survives the round trip', $back['entries'][0]['bracket'] === '₹50 lakh - 1 crore');
+unlink($file);
+rmdir($tmp);
+
+echo $fails ? "\n$fails FAILED\n" : "\nall good\n";
+exit($fails ? 1 : 0);

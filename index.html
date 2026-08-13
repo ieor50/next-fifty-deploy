@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Next Fifty · IEOR Golden Jubilee · IIT Bombay</title>
+<meta name="description" content="What should IEOR have in 2036 that it doesn't have today? The Golden Jubilee vision sheet, open to IEOR students.">
+<link rel="canonical" href="https://www.ieor.iitb.ac.in/next-fifty/">
+
+<!-- Not indexable until the PiC copy pass clears it. Delete this line to let
+     search engines in; the page is circulated by link, so it costs nothing to
+     stay out of results until then. -->
+<meta name="robots" content="noindex, nofollow">
+
+<meta property="og:title" content="IEOR at 100 starts now.">
+<meta property="og:description" content="What should IEOR have in 2036 that it doesn't have today? The Golden Jubilee vision sheet, open to IEOR students until 31 August.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.ieor.iitb.ac.in/next-fifty/">
+<meta property="og:site_name" content="IEOR Golden Jubilee">
+<meta property="og:locale" content="en_IN">
+<meta property="og:image" content="https://www.ieor.iitb.ac.in/next-fifty/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="IEOR at 100 starts now. The IEOR Golden Jubilee vision sheet, 1976 to 2026.">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="IEOR at 100 starts now.">
+<meta name="twitter:description" content="What should IEOR have in 2036 that it doesn't have today?">
+<meta name="twitter:image" content="https://www.ieor.iitb.ac.in/next-fifty/og.png">
+
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#faf6ec">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50' y='72' font-family='Georgia,serif' font-size='72' text-anchor='middle' fill='%239a7b2f'>50</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Cream, not white: Himanshu's pick off the review Look panel (Paper 3). */
+    --paper:#faf6ec;
+    --ink:#14140f;
+    --ink-2:rgba(20,20,15,.66);
+    --ink-3:rgba(20,20,15,.42);
+    --line:rgba(20,20,15,.14);
+    --line-soft:rgba(20,20,15,.08);
+    --gold:#9a7b2f;
+    --gold-line:rgba(154,123,47,.5);
+    --err:#8a2317;
+    --serif:"Fraunces", Georgia, "Times New Roman", serif;
+    --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  html{scroll-behavior:smooth}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+  ::selection{background:var(--ink);color:var(--paper)}
+
+  /* Single column by default. The desktop split lives in one media query at the
+     bottom of this stylesheet, so the phone layout is what you get if it never
+     matches. */
+  .layout{max-width:760px;margin:0 auto}
+
+  /* hero: centred per Himanshu. The intro below it stays left aligned, because
+     centred body copy of that length is genuinely harder to read. */
+  header{padding:72px 0 0;text-align:center}
+  .eyebrow{
+    font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-3);
+  }
+  /* The official department mark is a JPEG on a hard white background. Rather
+     than repaint it, multiply blends that white away: white times the page is
+     the page, so the box vanishes into the cream and the blue and black are
+     untouched. This carries the layout now that the page is not white. */
+  /* Sized against the headline rather than the page: at 104px it out-shouted a
+     52px h1, which is what Anant meant by the size-to-font ratio. It now sits
+     first, above the eyebrow, so the page reads mark, then context, then claim. */
+  .deptmark{
+    display:block;height:clamp(52px,9vw,66px);width:auto;margin:0 auto 14px;
+    mix-blend-mode:multiply;
+  }
+  .markcap{font-size:12px;color:var(--ink-3);letter-spacing:.02em}
+  .markcap b{color:var(--gold);font-weight:600}
+  .hair{border:none;border-top:1px solid var(--gold-line);margin:22px 0 32px}
+  h1{
+    font-family:var(--serif);font-weight:600;
+    font-size:clamp(34px,7.4vw,52px);line-height:1.08;letter-spacing:-.02em;
+  }
+  .subhead{margin:22px auto 0;font-size:17px;color:var(--ink-2);max-width:56ch}
+
+  /* Open House sits in the hero rather than only on the confirmation screen:
+     the form is circulated in the days before it, so the event is the reason
+     half these readers are on the page at all. */
+  .openhouse{
+    margin-top:26px;padding:12px 0;border-top:1px solid var(--gold-line);
+    border-bottom:1px solid var(--gold-line);
+    font-size:13px;letter-spacing:.02em;color:var(--ink-2);
+  }
+  .openhouse span{
+    color:var(--gold);font-weight:600;text-transform:uppercase;
+    letter-spacing:.14em;font-size:11.5px;margin-right:10px;
+  }
+  /* Prasad opened the page and could not tell there was a form below the fold.
+     One button, above the fold, that says what the page is for. */
+  .cta{
+    display:inline-block;margin-top:28px;padding:14px 34px;border-radius:100px;
+    background:var(--ink);color:var(--paper);text-decoration:none;
+    font-size:15px;font-weight:500;letter-spacing:.01em;transition:opacity .18s;
+  }
+  .cta:hover{opacity:.85}
+  .sec-note{font-size:13.5px;color:var(--ink-3);margin-top:10px}
+
+  /* intro */
+  .intro{padding:38px 0 8px;text-align:left}
+  .intro p + p{margin-top:18px}
+  .intro p{color:var(--ink-2)}
+  .intro strong{color:var(--ink);font-weight:600}
+  .closes{
+    margin-top:30px;font-size:13px;letter-spacing:.02em;color:var(--ink-3);
+    padding-top:18px;border-top:1px solid var(--line-soft);
+  }
+
+  /* sections */
+  section{padding:40px 0 0}
+  .sec-label{
+    font-family:var(--serif);font-weight:600;font-size:24px;letter-spacing:-.01em;
+    padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:8px;
+  }
+
+  /* fields */
+  .field{margin-top:22px}
+  .field > label,.legend{
+    display:block;font-size:15px;font-weight:500;color:var(--ink);margin-bottom:8px;
+  }
+  .help{font-size:13px;color:var(--ink-3);margin-top:7px;line-height:1.5}
+  input[type=text],input[type=email],textarea,select{
+    width:100%;font-family:var(--sans);font-size:16px;color:var(--ink);
+    background:transparent;border:none;border-bottom:1px solid var(--line);
+    border-radius:0;padding:9px 0;transition:border-color .18s;
+  }
+  select{
+    padding-right:20px;cursor:pointer;
+    appearance:none;-webkit-appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2314140f' stroke-opacity='.45' stroke-width='1.4'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 2px center;
+  }
+  /* An unchosen dropdown showed "Choose one" in full ink, so an empty field
+     looked answered. :invalid matches while the required select still holds the
+     empty placeholder option. */
+  select:invalid{color:var(--ink-3)}
+  select option{color:var(--ink)}
+  /* Starts one line tall and grows as the text wraps. It used to open three
+     lines tall and empty, which is the "unnecessary space" Anant flagged. */
+  textarea{resize:none;line-height:1.5;overflow:hidden;min-height:calc(1.5em + 21px)}
+  input:focus,textarea:focus,select:focus{outline:none;border-bottom-color:var(--ink)}
+  input::placeholder,textarea::placeholder{color:var(--ink-3)}
+  .count{font-size:12px;color:var(--ink-3);text-align:right;margin-top:5px}
+  .count.over{color:var(--err)}
+  .note{font-size:13px;color:var(--err);margin-top:7px;display:none}
+  .note.on{display:block}
+
+  /* vision entries */
+  .entry{padding-top:8px}
+  .entry + .entry{margin-top:30px;padding-top:26px;border-top:1px solid var(--line-soft)}
+  .entry-no{
+    font-family:var(--serif);font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);
+  }
+  .add{
+    margin-top:24px;font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink);
+    background:transparent;border:1px solid var(--line);border-radius:100px;
+    padding:11px 22px;cursor:pointer;transition:border-color .18s,background .18s;
+  }
+  .add:hover{border-color:var(--ink);background:rgba(20,20,15,.03)}
+  .add[hidden]{display:none}
+
+  /* radios and consent */
+  fieldset{border:none}
+  .choice{display:flex;align-items:center;gap:11px;margin-top:11px;cursor:pointer;font-size:16px}
+  .choice input{width:17px;height:17px;flex:none;accent-color:var(--ink);cursor:pointer;margin:0}
+  .consent{
+    margin-top:34px;padding-top:22px;border-top:1px solid var(--line);
+    display:flex;gap:12px;align-items:flex-start;cursor:pointer;
+  }
+  .consent input{width:17px;height:17px;flex:none;accent-color:var(--ink);margin:3px 0 0;cursor:pointer}
+  .consent span{font-size:14px;color:var(--ink-2);line-height:1.55}
+
+  /* submit */
+  .send{margin-top:30px;padding-bottom:80px}
+  .kicker{font-size:13px;color:var(--ink-3);margin-bottom:20px;line-height:1.55}
+  button[type=submit]{
+    font-family:var(--sans);font-size:15px;font-weight:500;letter-spacing:.01em;
+    color:var(--paper);background:var(--ink);border:none;border-radius:100px;
+    padding:15px 38px;cursor:pointer;transition:opacity .18s;
+  }
+  button[type=submit]:hover{opacity:.85}
+  button[type=submit]:disabled{opacity:.45;cursor:default}
+  .status{margin-top:18px;font-size:14px;color:var(--ink-2);min-height:21px;line-height:1.55}
+  .status.err{color:var(--err)}
+
+  /* confirmation */
+  .done{padding:104px 0 128px;max-width:760px;margin:0 auto}
+  .done h2{font-family:var(--serif);font-weight:600;font-size:clamp(32px,7vw,46px);letter-spacing:-.02em}
+  .done p{margin-top:22px;color:var(--ink-2)}
+  /* The confirmation screen is the last thing a student sees, so the event is
+     the message, not a footnote under it. */
+  .done .open-house{margin-top:44px;padding-top:30px;border-top:1px solid var(--gold-line)}
+  .oh-label{
+    font-family:var(--serif);font-weight:600;color:var(--gold);
+    font-size:clamp(22px,4.4vw,32px);letter-spacing:.06em;text-transform:uppercase;
+    line-height:1.1;
+  }
+  .oh-date{
+    font-family:var(--serif);font-weight:600;color:var(--ink);
+    font-size:clamp(44px,10vw,76px);letter-spacing:-.02em;line-height:1.02;margin-top:6px;
+  }
+  .oh-sub{margin-top:16px;font-size:16px;color:var(--ink-2)}
+  [hidden]{display:none !important}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+  @media (max-width:520px){
+    body{font-size:15.5px}
+    header{padding-top:34px}
+    .openhouse{margin-top:20px;padding:10px 0}
+    .cta{margin-top:22px;padding:13px 30px}
+    .intro{padding-top:30px}
+  }
+
+  /* One column at every width: description first, then the form, the way a
+     Google Form reads. Anant and Himanshu both asked for this independently
+     after seeing the two-column version. 760px is the widest a single column
+     of form fields can go before the labels drift too far from the inputs. */
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<div id="page" class="layout">
+
+ <div class="pitch">
+  <header>
+    <!-- data-review-id stays "fifty-mark" on purpose: Anant and Himanshu's
+         comments are attached to it, and renaming would orphan that thread. -->
+    <img class="deptmark" data-review-id="fifty-mark" src="ieor-logo.jpg"
+         width="475" height="463" alt="IEOR, IIT Bombay">
+    <p class="markcap" data-review-id="mark-caption">
+      Interim mark · <b>the Golden Jubilee gets its own logo soon</b>
+    </p>
+    <p class="eyebrow" data-review-id="eyebrow">IEOR Golden Jubilee · 1976-2026</p>
+    <hr class="hair">
+    <h1 data-review-id="headline">IEOR at 100 starts now.</h1>
+    <p class="subhead" data-review-id="subhead">
+      In 1976, this department started with a few rooms and an idea. Fifty years later,
+      we're asking a bigger question: what should IEOR have in 2036 that it doesn't
+      have today?
+    </p>
+
+    <p class="openhouse" data-review-id="open-house">
+      <span>Open House</span> 17 August · come see what the next fifty years look like
+    </p>
+
+    <a class="cta" href="#form" data-review-id="hero-cta">Add your vision</a>
+  </header>
+
+  <div class="intro" data-review-id="intro">
+    <p>
+      You tell us what IEOR should have and doesn't, and it becomes the department's vision sheet: the labs, the tools and
+      the opportunities we want for the next decade, put in front of alumni and corporate
+      donors who want to fund what comes next.
+    </p>
+    <p>
+      <strong>Think big.</strong> A ₹50 lakh compute cluster is a more useful answer than a better coffee
+      machine. If your idea costs less than ₹5 lakh on its own, fold it in with your other
+      dreams and ask for the bigger thing.
+    </p>
+    <p>
+      Shortlisted needs will be championed for alumni and corporate funding through the
+      Golden Jubilee programme.
+    </p>
+    <p class="closes" data-review-id="close-date">The vision sheet closes soon.</p>
+  </div>
+ </div>
+
+ <div class="sheet">
+  <form id="form" novalidate>
+
+    <section>
+      <h2 class="sec-label" data-review-id="label-who">Who you are</h2>
+
+      <div class="field">
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text" autocomplete="name" maxlength="120"
+               placeholder="Name Surname" required>
+      </div>
+
+      <div class="field">
+        <label for="roll">Roll number</label>
+        <input id="roll" name="roll" type="text" autocomplete="off" maxlength="20"
+               placeholder="25B0000" required>
+        <p class="note" id="rollNote">That doesn't look like the usual format, but we'll take it.</p>
+      </div>
+
+      <div class="field">
+        <label for="email">LDAP ID</label>
+        <input id="email" name="email" type="email" autocomplete="email" maxlength="254"
+               placeholder="ldapid@iitb.ac.in" required>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec-label" data-review-id="label-vision">Your vision</h2>
+      <p class="sec-note">Up to three. Lead with the one you would actually fight for.</p>
+      <div id="entries" data-review-id="vision-entries"></div>
+      <button type="button" class="add" id="add">Add another vision</button>
+    </section>
+
+    <section>
+      <fieldset>
+        <legend class="legend" data-review-id="involvement-question">Would you want to be involved in making any of this happen?</legend>
+        <label class="choice"><input type="radio" name="involvement" value="Yes" required> Yes</label>
+        <label class="choice"><input type="radio" name="involvement" value="Maybe"> Maybe</label>
+        <label class="choice"><input type="radio" name="involvement" value="Just putting the idea out there"> Just putting the idea out there</label>
+      </fieldset>
+
+      <label class="consent" data-review-id="consent-line">
+        <input type="checkbox" id="consent" required>
+        <span>I understand my response may be shared with the department and the Dean ACR's
+        office as part of the Golden Jubilee fundraising effort.</span>
+      </label>
+
+      <div class="send">
+        <p class="kicker" data-review-id="kicker">The Golden Jubilee is being built by a small team with a very long to-do list.</p>
+        <button type="submit" id="send" data-review-id="submit-button">Send it up</button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+  </form>
+ </div>
+</div>
+
+<div class="done" id="done" data-review-id="confirmation" hidden>
+  <h2>Noted. In gold.</h2>
+  <p>
+    Your vision is now part of the Golden Jubilee record. Shortlisted needs go in front
+    of alumni and the Dean ACR's office in the coming months.
+  </p>
+  <div class="open-house">
+    <p class="oh-label">Open House</p>
+    <p class="oh-date">17 August</p>
+    <p class="oh-sub">Come see what the next fifty years look like.</p>
+  </div>
+</div>
+
+</div>
+
+<template id="entryTpl">
+  <div class="entry">
+    <p class="entry-no"></p>
+
+    <div class="field">
+      <label>What should IEOR have in 2036?</label>
+      <input type="text" data-k="ask" maxlength="120" placeholder="A 50-seat AI and OR compute lab" required>
+    </div>
+
+    <div class="field">
+      <label>Why does this matter for the next decade?</label>
+      <textarea data-k="why" maxlength="500" rows="1" required></textarea>
+      <p class="count" data-for="why">0 / 500</p>
+      <p class="help">Write it like you're convincing an alum to fund it. Because you are.</p>
+    </div>
+
+    <div class="field">
+      <label>Ballpark budget</label>
+      <select data-k="bracket" required>
+        <option value="" selected disabled>Choose one</option>
+        <option>₹5-10 lakh</option>
+        <option>₹10-25 lakh</option>
+        <option>₹25-50 lakh</option>
+        <option>₹50 lakh - 1 crore</option>
+        <option>₹1 crore+</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Rough breakdown, if you have one</label>
+      <textarea data-k="breakdown" maxlength="500" rows="1"
+        placeholder="Workstations: ₹50L · networking: ₹2L"></textarea>
+      <p class="help">Optional. Itemisation helps, but the vision matters more than the arithmetic.</p>
+    </div>
+  </div>
+</template>
+
+<script>
+  const MAX_ENTRIES = 3;
+  const ORDINAL = ['Vision one', 'Vision two', 'Vision three'];
+
+  const entriesEl = document.getElementById('entries');
+  const addBtn    = document.getElementById('add');
+  const form      = document.getElementById('form');
+  const sendBtn   = document.getElementById('send');
+  const statusEl  = document.getElementById('status');
+  const rollEl    = document.getElementById('roll');
+  const rollNote  = document.getElementById('rollNote');
+
+  // One line until the text needs a second one.
+  function grow(t) {
+    const fit = () => { t.style.height = 'auto'; t.style.height = `${t.scrollHeight}px`; };
+    t.addEventListener('input', fit);
+    fit();
+    // Line metrics change when the webfont swaps in, so measure again after.
+    if (document.fonts?.ready) document.fonts.ready.then(fit);
+  }
+
+  function addEntry() {
+    const node = document.getElementById('entryTpl').content.cloneNode(true);
+    node.querySelector('.entry-no').textContent = ORDINAL[entriesEl.children.length];
+
+    const why = node.querySelector('[data-k=why]');
+    const count = node.querySelector('[data-for=why]');
+    why.addEventListener('input', () => {
+      count.textContent = why.value.length + ' / 500';
+      count.classList.toggle('over', why.value.length >= 500);
+    });
+
+    entriesEl.appendChild(node);
+    // Only once it is in the document. A detached element reports scrollHeight
+    // 0, which collapsed the box to a sliver of padding.
+    entriesEl.lastElementChild.querySelectorAll('textarea').forEach(grow);
+    addBtn.hidden = entriesEl.children.length >= MAX_ENTRIES;
+  }
+  addEntry();
+  addBtn.addEventListener('click', () => {
+    addEntry();
+    entriesEl.lastElementChild.querySelector('input').focus();
+  });
+
+  // Roll number format is a warning, never a block.
+  rollEl.addEventListener('blur', () => {
+    const odd = rollEl.value.trim() && !/^\d{2}[A-Za-z]\d{4}$/.test(rollEl.value.trim());
+    rollNote.classList.toggle('on', odd);
+  });
+
+  // Anant asked for the label to say LDAP ID, so people will type the bare id.
+  // Append the domain rather than reject them for following the label.
+  const withDomain = (v) => {
+    const t = v.trim();
+    return t && !t.includes('@') ? `${t}@iitb.ac.in` : t;
+  };
+
+  function collect() {
+    return {
+      name: document.getElementById('name').value,
+      roll: rollEl.value,
+      email: withDomain(document.getElementById('email').value),
+      involvement: form.querySelector('input[name=involvement]:checked')?.value || '',
+      consent: document.getElementById('consent').checked,
+      entries: [...entriesEl.children].map((el) => {
+        const v = {};
+        el.querySelectorAll('[data-k]').forEach((f) => { v[f.dataset.k] = f.value; });
+        return v;
+      }),
+    };
+  }
+
+  // Only missing required fields and a non-IITB email block the send.
+  function firstProblem(d) {
+    if (!d.name.trim()) return ['We need your name.', 'name'];
+    if (!d.roll.trim()) return ['We need your roll number.', 'roll'];
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email.trim())) return ['That email does not look right.', 'email'];
+    if (!/@iitb\.ac\.in$/i.test(d.email.trim())) return ['Please use your IITB email, the one ending in @iitb.ac.in.', 'email'];
+    for (const [i, e] of d.entries.entries()) {
+      const n = i + 1;
+      if (!e.ask.trim())   return [`Vision ${n}: what should IEOR have in 2036?`, null, i, 'ask'];
+      if (!e.why.trim())   return [`Vision ${n}: tell us why it matters.`, null, i, 'why'];
+      if (!e.bracket)      return [`Vision ${n}: pick a ballpark budget.`, null, i, 'bracket'];
+    }
+    if (!d.involvement) return ['Let us know whether you would want to be involved.', null];
+    if (!d.consent) return ['Please tick the box so we know we can share this with the department.', 'consent'];
+    return null;
+  }
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const data = collect();
+    statusEl.className = 'status';
+
+    const problem = firstProblem(data);
+    if (problem) {
+      const [message, id, entryIdx, key] = problem;
+      statusEl.className = 'status err';
+      statusEl.textContent = message;
+      const target = id
+        ? document.getElementById(id)
+        : entriesEl.children[entryIdx]?.querySelector(`[data-k=${key}]`);
+      target?.focus({ preventScroll: false });
+      return;
+    }
+
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Sending';
+    try {
+      const res = await fetch('submit.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(out.error || 'Something went wrong.');
+      document.getElementById('page').hidden = true;
+      document.getElementById('done').hidden = false;
+      window.scrollTo({ top: 0 });
+    } catch (err) {
+      statusEl.className = 'status err';
+      statusEl.textContent = err.message;
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send it up';
+    }
+  });
+
+</script>
+</body>
+</html>

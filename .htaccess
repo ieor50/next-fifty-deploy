@@ -1,0 +1,12 @@
+# This folder is a plain static page plus three PHP files. It is not part of the
+# Drupal site it sits inside, so switch off the inherited front-controller
+# rewrite: without this, a request for /next-fifty/submit.php can be swallowed by
+# Drupal's "route everything to index.php" rule and come back as a Drupal 404.
+<IfModule mod_rewrite.c>
+  RewriteEngine Off
+</IfModule>
+
+DirectoryIndex index.html
+
+# Nothing in here should be browsable as a list.
+Options -Indexes
