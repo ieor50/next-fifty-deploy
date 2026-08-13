@@ -118,14 +118,23 @@ function rate_limited(): bool {
   return false;
 }
 
-/** The export key, or '' if setup.php has not been run yet. */
-function read_key(): string {
-  $path = DATA_DIR . '/key.php';
-  if (!is_file($path)) return '';
-  return trim(substr((string)@file_get_contents($path), strlen(GUARD)));
-}
+/**
+ * SHA-256 of the export passphrase. Only the hash lives here, which is why this
+ * file is safe in a public repository: it cannot be reversed into the
+ * passphrase, and the passphrase is never written to this server at all.
+ *
+ * This replaced a setup.php that minted a key on first visit and locked itself.
+ * That handed the key to whoever loaded the page first, and the README told the
+ * world so. A race you have to win is not a lock.
+ *
+ * To rotate: pick a new random passphrase, put its sha256 here, redeploy.
+ *   php -r "echo hash('sha256', 'your-new-passphrase');"
+ */
+const KEY_HASH = '8fe87ceb366190d6edb1d36d08450b6b1384f75f0933f4287d0af8483211ae9b';
 
-function write_key(string $key): bool {
-  ensure_store();
-  return @file_put_contents(DATA_DIR . '/key.php', GUARD . $key, LOCK_EX) !== false;
+/** True if this passphrase is the one that hashes to KEY_HASH. */
+function key_ok(string $given): bool {
+  // hash_equals on the hashes, so a wrong guess cannot be narrowed down by
+  // timing the comparison.
+  return hash_equals(KEY_HASH, hash('sha256', $given));
 }

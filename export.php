@@ -8,15 +8,10 @@ declare(strict_types=1);
 require __DIR__ . '/vision.php';
 require __DIR__ . '/store.php';
 
-$key = read_key();
-$given = (string)($_GET['key'] ?? '');
-
-// hash_equals, not ==, so the comparison does not leak the key one character at
-// a time to anyone timing it.
-if ($key === '' || !hash_equals($key, $given)) {
+if (!key_ok((string)($_GET['key'] ?? ''))) {
   http_response_code(403);
   header('Content-Type: text/plain; charset=utf-8');
-  echo $key === '' ? "Not set up yet. Open setup.php first.\n" : "No.\n";
+  echo "No.\n";
   exit;
 }
 

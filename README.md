@@ -51,23 +51,15 @@ the apex name to the SAN when the cert is next renewed.
 
 ---
 
-## For Harshit, immediately after it goes up
+## For Harshit
 
-**Open `https://www.ieor.iitb.ac.in/next-fifty/setup.php` the moment it is deployed.**
-
-It prints an export key **once**, then locks itself and refuses everyone after. The key
-cannot ship in this repository because the repository is public, and nobody on this side has
-shell access to the server to place it there by hand. So: first visit wins, and it should be
-you, seconds after deploy.
-
-Save the key. Then, any time:
+Once it is deployed, the whole sheet downloads as a CSV from:
 
 ```
-https://www.ieor.iitb.ac.in/next-fifty/export.php?key=<KEY>
+https://www.ieor.iitb.ac.in/next-fifty/export.php?key=<PASSPHRASE>
 ```
 
-downloads every submission as a CSV, **one row per vision entry, not per person**, so
-pivoting on budget bracket is immediate. Columns:
+**One row per vision entry, not per person**, so pivoting on budget bracket is immediate:
 
 ```
 timestamp, name, roll, email, entry_no, ask, category, why, bracket, breakdown, involvement
@@ -75,7 +67,17 @@ timestamp, name, roll, email, entry_no, ask, category, why, bracket, breakdown, 
 
 The file carries a UTF-8 BOM so Excel renders the rupee signs instead of mojibake.
 
-Lost the key? Ask the admin to delete `data/key.php`, then load `setup.php` again.
+Only the **SHA-256 of that passphrase** is in this repository, as `KEY_HASH` in `store.php`.
+A hash cannot be reversed, so this repo being public gives nobody access, and the passphrase
+itself is never stored on the server at all.
+
+To rotate it: pick a new random passphrase, put its hash in `store.php`, redeploy.
+
+```
+php -r "echo bin2hex(random_bytes(24));"          # the passphrase, keep it
+php -r "echo hash('sha256', '<passphrase>');"     # the hash, goes in store.php
+NF_KEY=<passphrase> php selfcheck.php             # confirms the pair matches
+```
 
 ---
 

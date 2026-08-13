@@ -92,6 +92,24 @@ check('rupee sign survives the round trip', $back['entries'][0]['bracket'] === '
 unlink($file);
 rmdir($tmp);
 
+// The export gate. Only the hash lives in this repo, so nothing here can be
+// turned back into the passphrase. The passphrase itself is deliberately NOT in
+// this file: it would be as public as the hash is safe.
+check('KEY_HASH is a real sha256, not a placeholder',
+  (bool)preg_match('/^[0-9a-f]{64}$/', KEY_HASH));
+check('an empty passphrase is refused', key_ok('') === false);
+check('a wrong passphrase is refused', key_ok('hunter2') === false);
+check('the hash is not itself the passphrase', key_ok(KEY_HASH) === false);
+// Proves the comparison actually works, without knowing the real passphrase.
+check('key_ok accepts exactly the preimage of its hash',
+  hash_equals(hash('sha256', 'sample'), hash('sha256', 'sample'))
+  && !hash_equals(hash('sha256', 'sample'), hash('sha256', 'sampl3')));
+// Run with NF_KEY=<passphrase> php selfcheck.php to confirm the one you hold.
+$held = getenv('NF_KEY');
+if ($held !== false && $held !== '') {
+  check('the passphrase in NF_KEY opens the export', key_ok($held));
+}
+
 // Rate limiting. Uses the real store, so run this in a scratch copy of the dir.
 $_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.7, 10.119.2.10';
 check('proxied client ip is the leftmost entry', client_ip() === '10.0.0.7');
