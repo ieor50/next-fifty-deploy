@@ -1,4 +1,4 @@
-# The Next Fifty — IEOR Golden Jubilee vision sheet
+# The Next Fifty: IEOR Golden Jubilee vision sheet
 
 A single page that asks current IEOR students one question: what should IEOR have in 2036
 that it doesn't have today? Answers are collected until **31 August 2026** and exported as a
