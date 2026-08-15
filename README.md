@@ -4,7 +4,7 @@ A single page that asks current IEOR students one question: what should IEOR hav
 that it doesn't have today? Answers are collected until **31 August 2026** and exported as a
 CSV for the Golden Jubilee fundraising effort.
 
-Static HTML plus three small PHP files. **No database, no Drupal module, no composer, no
+Static HTML plus four small PHP files. **No database, no Drupal module, no composer, no
 changes to the existing site.**
 
 ---
@@ -24,8 +24,8 @@ That is the whole deploy. Nothing to configure, nothing to edit.
 
 1. PHP 8.1 or newer, with `mbstring` and `json` (Drupal 10 requires both).
 2. Apache must be able to **write** to the `next-fifty/data/` directory. The scripts create
-   it on first use; if the web user cannot write there, `setup.php` will say so in plain
-   English rather than failing silently.
+   it on first use; if the web user cannot write there, `submit.php` returns a plain error
+   saying so rather than failing silently.
 
 Please **do not** rename `data/`, and do not serve the folder with `Options +Indexes`.
 
@@ -89,9 +89,8 @@ NF_KEY=<passphrase> php selfcheck.php             # confirms the pair matches
 | `submit.php` | POST target. JSON in, `{ok:true}` or `{error:"..."}` out. |
 | `vision.php` | Field rules and CSV flattening, shared so they cannot drift apart. |
 | `store.php` | Where submissions land, and how they stay unreadable over HTTP. |
-| `setup.php` | Run once. Prints the export key, then locks. |
-| `export.php` | The CSV, gated on that key. |
-| `selfcheck.php` | `php selfcheck.php`. 32 assertions over the rules that matter. |
+| `export.php` | The CSV, gated on the passphrase that matches `KEY_HASH`. |
+| `selfcheck.php` | `php selfcheck.php`. 44 assertions over the rules that matter. |
 
 ## How submissions are stored
 

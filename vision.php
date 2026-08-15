@@ -15,6 +15,7 @@ const CATEGORIES = [
 ];
 
 const BRACKETS = [
+  'Under ₹5 lakh',
   '₹5-10 lakh',
   '₹10-25 lakh',
   '₹25-50 lakh',

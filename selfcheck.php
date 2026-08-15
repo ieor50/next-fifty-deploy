@@ -61,6 +61,17 @@ check('bad bracket rejected',
 check('over-long why rejected',
   validate(good(['entries' => [array_merge(good()['entries'][0], ['why' => str_repeat('x', 501)])]]), $OPEN)['ok'] === false);
 
+// Every budget option the page can send must validate. Read them out of the
+// markup, so the select and the allowlist cannot drift apart the way the
+// involvement radios once did.
+$markup = file_get_contents(__DIR__ . '/index.html');
+preg_match_all('/<option>([^<]*(?:lakh|crore)[^<]*)<\/option>/u', $markup, $m);
+check('six budget options in index.html', count($m[1]) === 6);
+foreach ($m[1] as $bracket) {
+  check("page bracket \"$bracket\" validates",
+    validate(good(['entries' => [array_merge(good()['entries'][0], ['bracket' => $bracket])]]), $OPEN)['ok'] === true);
+}
+
 // The close date is enforced here, not just printed on the page.
 check('open before the close date', validate(good(), $OPEN)['ok'] === true);
 $shut = validate(good(), strtotime('2026-09-01 00:00:01 +0530'));
