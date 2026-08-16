@@ -90,7 +90,7 @@ NF_KEY=<passphrase> php selfcheck.php             # confirms the pair matches
 | `vision.php` | Field rules and CSV flattening, shared so they cannot drift apart. |
 | `store.php` | Where submissions land, and how they stay unreadable over HTTP. |
 | `export.php` | The CSV, gated on the passphrase that matches `KEY_HASH`. |
-| `selfcheck.php` | `php selfcheck.php`. 44 assertions over the rules that matter. |
+| `selfcheck.php` | `php selfcheck.php`. 44 assertions over the rules that matter. Command line only, it answers 404 over HTTP. |
 
 ## How submissions are stored
 

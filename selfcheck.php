@@ -7,6 +7,11 @@
 
 declare(strict_types=1);
 
+// CLI only. Deployed alongside the page, this file is reachable over HTTP, and
+// its rate limit section writes counters into the live data/ directory and then
+// deletes every one of them: loading the URL would reset throttling for everyone.
+if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
+
 require __DIR__ . '/vision.php';
 require __DIR__ . '/store.php';
 
